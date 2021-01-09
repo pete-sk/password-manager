@@ -1,0 +1,33 @@
+{% extends 'user_data/access_data.html' %}
+
+{% block no_entries_alert %}
+  You don't have any saved secure notes yet! <a href="{{ url_for('user_data.add_secure_note') }}">Save your first secure note.</a>
+{% endblock no_entries_alert %}
+
+{% block top_buttons %}
+  <a class="btn btn-primary mr-3 float-right" href="{{ url_for('user_data.add_secure_note') }}">Add Secure Note</a>
+{% endblock top_buttons %}
+
+{% block entry_header %}
+  {{ entries[i].name }}
+{% endblock entry_header %}
+
+{% block entry_preview %}
+  {{ entries[i].content }}
+{% endblock entry_preview %}
+
+{% block modal_title %}
+  Secure Note
+{% endblock modal_title %}
+
+{% block modal_body %}
+  {% include 'user_data/secure_notes/secure_note_modal_body.html' %}
+{% endblock modal_body %}
+
+{% block edit_button_target %}
+  {{ url_for('user_data.edit_secure_note', entry_id=entries[i].id) }}
+{% endblock edit_button_target %}
+
+{% block delete_button_target %}
+  {{ url_for('user_data.delete_secure_note', entry_id=entries[i].id) }}
+{% endblock delete_button_target %}

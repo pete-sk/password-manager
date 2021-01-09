@@ -1,0 +1,129 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="content-section">
+	<div class="media">
+		<div class="media-body">
+			<h2 class="account-heading mb-4">{{ current_user.email }}</h2>
+		</div>
+	</div>
+  
+  <!-- Master key field -->
+  <fieldset class="form-group">
+    <legend class="border-bottom">Master Key</legend>
+    
+    <div class="row pt-3">
+      <div class="col">
+        <input class="form-control form-control-sm" id="masterKeyField" value="{{ session['master_key'] }}" this.select() readonly>
+      </div>
+      <div class="col">
+        <a class="btn btn-primary btn-sm float-right" href="{{ url_for('account.download_master_key') }}">Download</a>
+        <a class="btn btn-warning btn-sm mr-2 float-right" href="{{ url_for('account.change_master_key') }}">Change</a>
+      </div>
+    </div>
+    <small class="form-text text-muted mt-3">
+      Master key is necessary to reset your password without wiping your data. If you lose your master key, you will still be able to reset your password, but all your user data will be permanently erased. Please save your master key in a secure place to prevent data loss.
+    </small>
+  </fieldset>
+
+  <!-- 2fa field -->
+  <fieldset class="form-group">
+    <legend class="border-bottom">Two Factor Authentication</legend>
+    
+    <div class="row">
+      {% if tfa == true %} 
+        <div class="tfa-on col-8 pt-3">
+          Two Factor Authentication is TURNED ON for this account.
+        </div>
+        <div class="col mt-3">
+          <a class="btn btn-danger btn-sm float-right" href="{{ url_for('account.disable_2fa') }}">Turn Off</a>
+        </div>
+      {% else %}
+        <div class="tfa-off col-8 pt-3">
+          Two Factor Authentication is TURNED OFF for this account.
+        </div>
+        <div class="col mt-3">      
+          <a class="btn btn-primary btn-sm float-right" href="{{ url_for('account.setup_2fa') }}">Turn On</a>
+        </div>
+      {% endif %}
+    </div>      
+  </fieldset>
+
+	<!-- Update account form -->
+	<form method="POST" action="" enctype="multipart/form-data">
+		{{ form.hidden_tag() }}
+		<fieldset class="form-group">
+			<legend class="border-bottom mb-4">Account Info</legend>
+		
+			<div class="form-group">
+				{{ form.email.label(class="form-control-label") }}
+				
+				{% if form.email.errors %}
+					{{ form.email(class="form-control form-control is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.email.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% else %}
+					{{ form.email(class="form-control form-control") }}
+				{% endif %}
+			</div>
+
+      <div class="form-group">
+      {{ form.current_password.label(class="form-control-label") }}
+      
+      {% if form.current_password.errors %}
+        {{ form.current_password(class="form-control form-control is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.current_password.errors %}
+            <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% else %}
+        {{ form.current_password(class="form-control form-control") }}
+      {% endif %}
+    </div>
+
+      <div class="form-group">
+      {{ form.new_password.label(class="form-control-label") }}
+      
+      {% if form.new_password.errors %}
+        {{ form.new_password(class="form-control form-control is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.new_password.errors %}
+            <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% else %}
+        {{ form.new_password(class="form-control form-control") }}
+      {% endif %}
+    </div>
+    
+    <div class="form-group">
+      {{ form.confirm_password.label(class="form-control-label") }}
+      
+      {% if form.confirm_password.errors %}
+        {{ form.confirm_password(class="form-control form-control is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.confirm_password.errors %}
+            <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% else %}
+        {{ form.confirm_password(class="form-control form-control") }}
+      {% endif %}
+    </div>      
+		</fieldset>
+
+		<div class="form-group">
+			{{ form.submit(class="btn btn-outline-info") }}
+		</div>
+	</form> 
+
+  <div class="delete-account-link border-top mt-4 pt-2">
+    <br>
+    <a class="delete-account-link" href="{{ url_for('account.delete_account') }}">Delete Account</a>
+  </div>
+</div>
+{% endblock %}

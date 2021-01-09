@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form method="POST" action="">
+  {{ form.hidden_tag() }}
+  <div class="content-section">
+    <fieldset class="form-group">
+      <legend class="border-bottom">{{ title }}</legend>
+
+      <div class="row pt-3">
+        <div class="col">
+          {{ form.master_key(class="form-control form-control-sm", **{"onclick": "this.select()", "readonly":Null })}}
+        </div>
+        <div class="col">
+          <a class="btn btn-primary btn-sm" href="{{ url_for('account.change_master_key') }}">Refresh</a>
+        </div>
+      </div>
+      <small class="form-text text-muted mt-3">
+        Your current master key will be no longer valid after you change it. All your saved data, such as Passwords, Secure&nbspNotes, Credit&nbspCards, will be reencrypted with the new key. Please save your master key in a secure place to prevent data loss.
+      </small>
+    </fieldset>
+    <div class="row mt-4 mb-3">
+      <div class="col">
+        <div class="float-right">
+          <a class="btn btn-secondary mr-1" href="{{ url_for('account.account_settings') }}">Cancel</a>
+          <button class="btn btn-warning" data-toggle="modal" data-target="#resetMasterKeyModal">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Password prompt -->
+  <div class="modal fade" id="resetMasterKeyModal" tabindex="-1" role="dialog" aria-labelledby="resetMasterKeyModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="resetMasterKeyModalLabel">Are you sure want to change your master key?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col">
+              <label class="mt-1 mr-2">Enter your password: </label>
+            </div>
+            <div class="col-7">
+              {{ form.password(class="form-control form-control-sm") }}
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#detailsModal">Cancel</button>
+          {{ form.submit(class="btn btn-warning")}}
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h2 class="pb-2 mb-3 border-bottom">
+    {{ title }}
+
+    <div class="float-right">
+      {% if admin %}
+        {% if author %}
+          <a class="btn btn-primary btn-sm mb-2" href="{{ url_for('blog.new_post', author=author) }}">New Post</a>
+        {% else %}
+          <a class="btn btn-primary btn-sm mb-2" href="{{ url_for('blog.new_post') }}">New Post</a>
+        {% endif %}
+      {% else %}
+        {% if not home %}
+          <div class="mb-3" >
+            <a href="{{ url_for('blog.blog_home') }}">← home</a>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </h2>
+  
+  {% for post in posts.items %}
+    <article class="media content-section mb-4">
+      <div class="media-body">
+        <h4><a class="article-title" href="{{ url_for('blog.view_post', post_id=post.id) }}">{{ post.title }}</a></h4>
+        <div class="article-metadata">
+          <small class="text-muted">
+            <a class="mr-2" href="{{ url_for('blog.posts_by', author=post.author) }}">{{ post.author }}</a>
+            {{ post.date_posted.strftime('%B %d, %Y') }}
+          </small>
+        </div>
+        <div class="article-preview">
+          <p class="article-content-preview">{{ post.content }}</p>
+          <a class="float-right" href="{{ url_for('blog.view_post', post_id=post.id) }}">Read More</a>
+        </div>
+      </div>
+    </article>
+  {% endfor %}
+
+  {% if not posts.items %}
+    <div class="alert alert-info mt-3" role="alert">
+      No posts yet!
+    </div>
+  {% endif %}
+
+  {% if author %}
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if posts.page == page_num %}
+        <a class="btn btn-outline-primary mb-4" href="{{ url_for('blog.posts_by', author=author, page=page_num)}}">{{ page_num }}</a>
+        {% else %}
+        <a class="btn btn-link mb-4" href="{{ url_for('blog.posts_by', author=author, page=page_num)}}">{{ page_num }}</a>
+        {% endif %}
+      {% else %}
+        ...
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if posts.page == page_num %}
+        <a class="btn btn-outline-primary mb-4" href="{{ url_for('blog.blog_home', page=page_num)}}">{{ page_num }}</a>
+        {% else %}
+        <a class="btn btn-link mb-4" href="{{ url_for('blog.blog_home', page=page_num)}}">{{ page_num }}</a>
+        {% endif %}
+      {% else %}
+        ...
+      {% endif %}
+    {% endfor %}
+  {% endif %}   
+{% endblock content %}

@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="content-section">
+  <form method="POST" action="" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+      <legend class="border-bottom mt-4">{{ title }}</legend>
+      
+      <div class="row pt-2">
+        <div class="col">
+         <span class="form-text text-muted">Please enter the master key valid <u>at the time of exporting the data</u>. All data included in the file, such as Passwords, Secure&nbspNotes, Credit&nbspCards, will be displayed on a single page.</span>
+        </div>
+      </div>
+      <div class="row pt-3">
+        <div class="col">
+          <div class="form-group">
+            {{ form.master_key.label(class="form-control-label") }}
+            
+            {% if form.master_key.errors %}
+              {{ form.master_key(class="form-control form-control-lg is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.master_key.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.master_key(class="form-control form-control") }}
+            {% endif %}
+          </div>
+        </div>
+        <div class="col">
+          {{ form.file.label(class="form-control-label") }}
+          {{ form.file(class="form-control-file mt-2") }}
+          {% if form.file.errors %}
+            {% for error in form.file.errors %}
+              <span class="text-danger">{{ error }}</span></br>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col">
+            {{ form.submit(class="btn btn-primary float-right", **{'value': 'Decrypt'}) }}
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>
+
+{% endblock %}

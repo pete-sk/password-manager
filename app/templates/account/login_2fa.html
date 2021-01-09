@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="content-section">
+	<form method="POST" action="">
+		{{ form.hidden_tag() }}
+		<fieldset class="form-group">
+			<legend class="border-bottom mb-4">{{ title }}</legend>
+			
+			<div class="form-group">
+				{{ form.security_code.label(class="form-control-label") }}
+				
+				{% if form.security_code.errors %}
+					{{ form.security_code(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.security_code.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% else %}
+					{{ form.security_code(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
+			
+			<div class="form-check">
+				{{ form.remember(class="form-check-input") }}	
+				{{ form.remember.label(class="form-check-label") }}	
+			</div>
+		</fieldset>
+
+		<div class="form-group">
+			{{ form.submit(class="btn btn-outline-info") }}
+		</div>
+	</form>
+</div>
+
+{% endblock %}

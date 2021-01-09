@@ -1,0 +1,65 @@
+{% extends 'user_data/access_data.html' %}
+
+{% block no_entries_alert %}
+  You don't have any saved items yet!
+{% endblock no_entries_alert %}
+
+{% block top_buttons %}
+  <a class="btn btn-primary mr-3 float-right" href="{{ url_for('user_data.add_password') }}">Add Password</a>
+  <a class="btn btn-primary mr-3 float-right" href="{{ url_for('user_data.add_secure_note') }}">Add Secure Note</a>
+  <a class="btn btn-primary mr-3 float-right" href="{{ url_for('user_data.add_credit_card') }}">Add Credit Card</a>
+{% endblock top_buttons %}
+
+{% block entry_header %}
+  {{ entries[i].name }}
+{% endblock entry_header %}
+
+{% block entry_preview %}
+  {% if entries[i].__class__.__name__ == 'Password' %}
+    {{ entries[i].username }}
+  {% elif entries[i].__class__.__name__ == 'SecureNote' %}
+    {{ entries[i].content }}
+  {% elif entries[i].__class__.__name__ == 'CreditCard' %}
+    {{ entries[i].number }}
+  {% endif %}
+{% endblock entry_preview %}
+
+{% block modal_title %}
+  {% if entries[i].__class__.__name__ == 'Password' %}
+    Password
+  {% elif entries[i].__class__.__name__ == 'SecureNote' %}
+    Secure Note
+  {% elif entries[i].__class__.__name__ == 'CreditCard' %}
+    Credit Card
+  {% endif %}
+{% endblock modal_title %}
+
+{% block modal_body %}
+  {% if entries[i].__class__.__name__ == 'Password' %}
+    {% include 'user_data/passwords/password_modal_body.html' %}
+  {% elif entries[i].__class__.__name__ == 'SecureNote' %}
+    {% include 'user_data/secure_notes/secure_note_modal_body.html' %}
+  {% elif entries[i].__class__.__name__ == 'CreditCard' %}
+    {% include 'user_data/credit_cards/credit_card_modal_body.html' %}
+  {% endif %}
+{% endblock modal_body %}
+
+{% block edit_button_target %}
+  {% if entries[i].__class__.__name__ == 'Password' %}
+    {{ url_for('user_data.edit_password', entry_id=entries[i].id) }}
+  {% elif entries[i].__class__.__name__ == 'SecureNote' %}
+    {{ url_for('user_data.edit_secure_note', entry_id=entries[i].id) }}
+  {% elif entries[i].__class__.__name__ == 'CreditCard' %}
+    {{ url_for('user_data.edit_credit_card', entry_id=entries[i].id) }}
+  {% endif %}
+{% endblock edit_button_target %}
+
+{% block delete_button_target %}
+  {% if entries[i].__class__.__name__ == 'Password' %}
+    {{ url_for('user_data.delete_password', entry_id=entries[i].id) }}
+  {% elif entries[i].__class__.__name__ == 'SecureNote' %}
+    {{ url_for('user_data.delete_secure_note', entry_id=entries[i].id) }}
+  {% elif entries[i].__class__.__name__ == 'CreditCard' %}
+    {{ url_for('user_data.delete_credit_card', entry_id=entries[i].id) }}
+  {% endif %}
+{% endblock delete_button_target %}

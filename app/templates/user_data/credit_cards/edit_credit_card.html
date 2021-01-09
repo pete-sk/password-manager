@@ -1,0 +1,92 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="content-section">
+  <form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4">{{ title }}</legend>
+
+      <div class="form-group">
+        {{ form.name.label(class="form-control-label") }}
+        
+        {% if form.name.errors %}
+          {{ form.name(class="form-control form-control is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.name.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.name(class="form-control form-control") }}
+        {% endif %}
+      </div>
+      
+      <div class="form-group">
+        {{ form.number.label(class="form-control-label") }}
+        
+        {% if form.number.errors %}
+          {{ form.number(class="form-control form-control is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.number.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.number(class="form-control form-control") }}
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        {{ form.expiration_date.label(class="form-control-label") }}
+        
+        {% if form.expiration_date.errors %}
+          {{ form.expiration_date(class="form-control form-control is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.expiration_date.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.expiration_date(class="form-control form-control") }}
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        {{ form.cvv.label(class="form-control-label") }}
+        
+        {% if form.cvv.errors %}
+          {{ form.cvv(class="form-control form-control is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.cvv.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.cvv(class="form-control form-control") }}
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        {{ form.cardholder_name.label(class="form-control-label") }}
+        
+        {% if form.cardholder_name.errors %}
+          {{ form.cardholder_name(class="form-control form-control is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.cardholder_name.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.cardholder_name(class="form-control form-control") }}
+        {% endif %}
+      </div>
+    </fieldset>
+
+    <div class="form-group">
+      {{ form.submit(class="btn btn-outline-info") }}
+    </div>
+  </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form method="POST" action="">
+  {{ form.hidden_tag() }}
+  <div class="content-section">
+    <fieldset class="form-group">
+      <legend class="border-bottom">{{ title }}</legend>
+
+      <img class="otp-qr-code" id='otp-qr-code'>
+
+      {{ form.secret(class="otp-secret-field form-control form-control-sm", **{"onclick": "this.select()", "readonly":Null })}}
+      
+      <p class="form-text mt-3">
+        Scan the image above with the two-factor authentication app on your phone. If you can’t use a barcode, enter the text code instead.
+      </p>
+      <small class="form-text text-muted mt-3">
+        Two factor authentication (2FA) is an extra layer of security used when logging into websites or apps. After you enable 2FA, the only way someone can sign into your account is if they know both your password and have access to the authentication code on your phone.
+      </small>
+    </fieldset>
+    <div class="row mt-4 mb-3">
+      <div class="col">
+        <div class="float-right">
+          <a class="btn btn-secondary mr-1" href="{{ url_for('account.account_settings') }}">Cancel</a>
+          <button class="btn btn-primary" data-toggle="modal" data-target="#enable2FAModal">Enable</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Password prompt -->
+  <div class="modal fade" id="enable2FAModal" tabindex="-1" role="dialog" aria-labelledby="enable2FAModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="enable2FAModalLabel">Are you sure want to enable 2FA?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col">
+              <label class="mt-1 mr-2">Enter your password: </label>
+            </div>
+            <div class="col-7">
+              {{ form.password(class="form-control form-control-sm") }}
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#detailsModal">Cancel</button>
+          {{ form.submit(class="btn btn-primary",)}}
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/qrious.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='scripts/qrcode.js') }}"></script>
+{% endblock %}

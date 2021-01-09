@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/bootstrap.min.css') }}">
+
+  <script type="text/javascript" src="{{ url_for('static', filename='scripts/jquery-3.5.1.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/bootstrap.min.js') }}"></script>
+  
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/lock-24px.svg') }}">
+
+  <title>{% if title %}{{ title }} - {% endif %}Password Manager</title>
+</head>
+<body>
+	<header class="site-header">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="{{ url_for('main.index') }}">
+            Password Manager
+            <img src="{{ url_for('static', filename='img/lock-white.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              {% if current_user.is_authenticated %}
+                <a class="nav-item nav-link" href="{{ url_for('user_data.access_all') }}">All Items</a>
+                <a class="nav-item nav-link" href="{{ url_for('user_data.access_passwords') }}">Passwords</a>
+                <a class="nav-item nav-link" href="{{ url_for('user_data.access_secure_notes') }}">Secure Notes</a>
+                <a class="nav-item nav-link" href="{{ url_for('user_data.access_credit_cards') }}">Credit Cards</a>
+              {% endif %}
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+              {% if current_user.is_authenticated %}
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ current_user.email }}
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ url_for('account.account_settings') }}">Account Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ url_for('account.logout') }}">Logout</a>
+                  </div>
+                </li>
+              {% else %}
+                <a class="nav-item nav-link" href="{{ url_for('account.login') }}">Login</a>
+                <a class="nav-item nav-link" href="{{ url_for('account.register') }}">Register</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+	<main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+        	{% with messages = get_flashed_messages(with_categories=true) %}
+            	{% if messages %}
+              		{% for category, message in messages %}
+                		<div class="alert alert-{{ category }}">
+                  			{{ message }}
+                		</div>
+              		{% endfor %}
+            	{% endif %}
+          	{% endwith %}
+         	{% block content %}{% endblock content %}
+        </div>
+    </div>
+	</main> 
+
+  <footer class="footer border-top">
+    <div class="container">
+      <a class="mx-2" href="{{ url_for('main.about') }}">About</a>
+      <a class="mx-2" href="{{ url_for('blog.blog_home') }}">Blog</a>
+      <a class="mx-2" href="{{ url_for('main.generate_password') }}">Generate Password</a>
+      <a class="mx-2" href="{{ url_for('user_data.decrypt_data') }}">Decrypt Data</a>
+      {% if current_user.is_authenticated %}
+        <a class="mx-2" href="{{ url_for('user_data.backup') }}">Import/Export</a>
+      {% endif %}
+    </div>
+  </footer>
+
+  <script type="text/javascript" src="{{ url_for('static', filename='scripts/main.js') }}"></script>
+</body>
+</html>

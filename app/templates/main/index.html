@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="jumbotron bg-white border">
+  <div class="container">
+    <h1 class="display-4">Password Manager</h1>
+    <hr class="my-4">
+    <h5>Sync all your passwords across every device for free!</h5>
+    <p>Just remember your master password and Password Manager remembers the rest. <br> See for yourself how easy password management can be!</p>
+    <a class="btn btn-primary btn-lg mt-2" href="{{ url_for('account.register') }}" role="button">Get Started</a>
+  </div>
+</div>
+{% endblock content %}
+
