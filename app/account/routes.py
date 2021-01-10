@@ -198,8 +198,8 @@ def setup_2fa():
         form.secret.data = secret
         return render_template('account/2fa_setup.html', title=title, form=form, secret=secret), \
             {'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache',
-            'Expires': '0'}
+             'Pragma': 'no-cache',
+             'Expires': '0'}
 
 
 @account.route('/account/settings/2fa/setup/otp-path/<secret>')

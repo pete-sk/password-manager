@@ -3,13 +3,12 @@ from flask import Blueprint, jsonify, request
 from app import bcrypt
 from app.utils.nocache import nocache
 from app.models import User
-from app.user_data.utils import export_encrypted_user_data
-from app.api.utils import process_user_data_manipulation_request
+from app.user_data.utils import export_encrypted_user_data, process_user_data_manipulation_request
 
 api = Blueprint('api', __name__)
 
 
-@api.route('/api/get_token', methods=['GET', 'POST'])
+@api.route('/api/get-token', methods=['GET', 'POST'])
 def get_token():
     """Sends API token if valid credentials provided."""
     email = request.json['email']

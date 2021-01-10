@@ -51,7 +51,7 @@ class User(db.Model, UserMixin):
             return None
         return User.query.get(user_id)
 
-    def get_api_token(self, expires_seconds=20):
+    def get_api_token(self, expires_seconds=1800):
         s = TimedSerializer(current_app.config['SECRET_KEY'], expires_seconds)
         return s.dumps({'user_id': self.id}).decode('utf-8')
 
