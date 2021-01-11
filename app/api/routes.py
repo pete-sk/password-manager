@@ -8,8 +8,8 @@ from app.user_data.utils import export_encrypted_user_data, process_user_data_ma
 api = Blueprint('api', __name__)
 
 
-@api.route('/api/get-token', methods=['GET', 'POST'])
-def get_token():
+@api.route('/api')
+def api_token_request():
     """Sends API token if valid credentials provided."""
     email = request.json['email']
     password = request.json['password']
@@ -33,25 +33,25 @@ def get_token():
     return 'invalid_credentials', 404
 
 
-@api.route('/api/get/<token>')
+@api.route('/api/<token>', methods=['GET', 'POST'])
 @nocache
-def send_encrypted_user_data(token):
+def api_token(token):
     user = User.verify_api_token(token)
-    if user:
-        return jsonify(export_encrypted_user_data(user, include_master_key=True))
-    else:
-        return '', 404
 
-
-@api.route('/api/post/<token>', methods=['POST'])
-def receive_user_data_manipulation_request(token):
-    """Receive a dict of encrypted user data or deletion request."""
-    # dict template: data = {'action': 'add/edit/delete', 'data_type': 'password/secure_note/credit_card', 'data': data}
-    user = User.verify_api_token(token)
-    if user == 'expired':
-        return 'signature expired', 401
-    elif user:
-        if process_user_data_manipulation_request(request.json, user):
-            return 'success', 200
+    if request.method == 'GET':
+        if user:
+            return jsonify(export_encrypted_user_data(user, include_master_key=True))
         else:
-            return 'failure', 500
+            return '', 404
+
+    elif request.method == 'POST':
+        """Receive a dict of encrypted user data or deletion request."""
+        # dict template: data = {'action': 'add/edit/delete', 'data_type': 'password/secure_note/credit_card', 'data': data}
+        user = User.verify_api_token(token)
+        if user == 'expired':
+            return 'signature expired', 401
+        elif user:
+            if process_user_data_manipulation_request(request.json, user):
+                return 'success', 200
+            else:
+                return 'failure', 500
